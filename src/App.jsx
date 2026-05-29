@@ -111,7 +111,6 @@ export default function App() {
           if (cancelled) return;
           if (recs.length > 0) {
             setRecords(recs);
-            setBootError(`Loaded ${recs.length.toLocaleString("en-IN")} allotment rows from Supabase.`);
           } else {
             setRecords(generateSampleData());
           }
@@ -218,19 +217,6 @@ export default function App() {
           records={records}
           availableYears={availableYears}
         />
-      )}
-
-      {bootError && (
-        <div className="shell" style={{padding: "10px 32px", marginTop: 12}}>
-          <div className="panel" style={{
-            background: "var(--brand-orange-soft)", borderColor: "var(--brand-orange-tint)",
-            color: "var(--brand-orange-deep)", display:"flex", justifyContent:"space-between",
-            alignItems:"center", gap: 12, padding: "10px 14px"
-          }}>
-            <span style={{fontSize: 13, fontWeight: 500}}>{bootError}</span>
-            <button className="btn ghost sm" onClick={() => setBootError(null)} style={{color:"var(--brand-orange-deep)"}}>Dismiss ✕</button>
-          </div>
-        </div>
       )}
 
       {route === "home" && (
