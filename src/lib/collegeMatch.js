@@ -131,9 +131,21 @@ export function matchCollege(query, threshold = 0.72) {
     let overlapIdf = 0;
     for (const t of qTokens) if (m.nameTokens.has(t)) overlapIdf += idf(t);
 
+    // Distinctive query tokens this master doesn't recognize anywhere (name,
+    // aliases, city, or state) are evidence the query names a DIFFERENT
+    // institution. Folding them into the denominator stops a short master name
+    // ("Gandhi Medical College") from absorbing a longer, distinct one
+    // ("Mahatma Gandhi Inst., Wardha" or "Indira Gandhi Govt., Nagpur") just
+    // because it's a token-superset. Only RARE tokens count — common words like
+    // "medical"/"institute" carry no institution-identity signal.
+    let foreignIdf = 0;
+    for (const t of qTokens) {
+      if (!m.tokens.has(t) && idf(t) >= IDF_MIN_FOR_SIG) foreignIdf += idf(t);
+    }
+
     let mNameIdfSum = 0;
     for (const t of m.nameTokens) mNameIdfSum += idf(t);
-    const denom = Math.max(0.1, Math.min(qIdfSum, mNameIdfSum));
+    const denom = Math.max(0.1, Math.min(qIdfSum, mNameIdfSum)) + foreignIdf;
     let score = overlapIdf / denom;
 
     // Alias bonus — strong signal when an alias's tokens all appear in query.

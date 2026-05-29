@@ -168,12 +168,14 @@ export function predictCollegeCourse(college, course, student, allRecords, _opti
   }
   if (!poolEval.length) return null;
 
-  const oneMinus = poolEval.reduce((a, pe) => a * (1 - pe.p), 1);
-  let P = 1 - oneMinus;
-  const ciHi = 1 - poolEval.reduce((a, pe) => a * (1 - pe.pHi), 1);
-  const ciLo = 1 - poolEval.reduce((a, pe) => a * (1 - pe.pLo), 1);
   const clamp = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
-  P = clamp(P, 0.01, 0.99);
+  const oneMinus = poolEval.reduce((a, pe) => a * (1 - pe.p), 1);
+  const P = clamp(1 - oneMinus, 0.01, 0.99);
+  // Clamp the CI to the same range as P. Without this the band can contradict the
+  // point estimate at the extremes (e.g. P floored to 0.01 while ciHi is ~0).
+  // clamp is monotonic, so raw ciLo <= P <= ciHi is preserved after clamping.
+  const ciHi = clamp(1 - poolEval.reduce((a, pe) => a * (1 - pe.pHi), 1), 0.01, 0.99);
+  const ciLo = clamp(1 - poolEval.reduce((a, pe) => a * (1 - pe.pLo), 1), 0.01, 0.99);
 
   const roundP = (roundFilter) => {
     const peR = [];
