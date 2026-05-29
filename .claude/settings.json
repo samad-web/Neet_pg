@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e *)",
+      "Bash(node server/index.js)",
+      "WebFetch(domain:mcc.nic.in)",
+      "Bash(node scripts/import-all-mcc.mjs)"
+    ]
+  }
+}

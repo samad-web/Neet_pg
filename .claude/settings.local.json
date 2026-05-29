@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd /c/Users/mas20/Desktop/work/Neet_pg/.design/pg-neer/project && wc -l data-colleges.js styles.css hero.jsx sections.jsx admin.jsx)",
+      "Read(//c/c/Users/mas20/Desktop/work/Neet_pg/.design/pg-neer/project/**)",
+      "Bash(powershell.exe -Command \"Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force; Start-Sleep -Milliseconds 300\")",
+      "Bash(npm run *)",
+      "Bash(curl -s --max-time 2 http://localhost:8787/api/health)"
+    ]
+  }
+}
