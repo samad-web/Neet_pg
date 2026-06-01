@@ -97,7 +97,7 @@ export default function App() {
     const h = readHash();
     const initial = VALID_ROUTES.includes(h) ? h : "home";
     // First-time visitors (incomplete profile) open on the profile step.
-    if (!isProfileComplete(student) && ["home", "predictions", "colleges"].includes(initial)) {
+    if (!isProfileComplete(student) && ["home", "predictions"].includes(initial)) {
       return "profile";
     }
     return initial;
@@ -246,7 +246,7 @@ export default function App() {
       )}
 
       {/* Prediction-bearing routes are gated on a complete profile. */}
-      {["home", "predictions", "colleges"].includes(route) && !profileComplete && (
+      {["home", "predictions"].includes(route) && !profileComplete && (
         <ProfileGate onGoToProfile={() => setRoute("profile")} />
       )}
 
@@ -278,7 +278,7 @@ export default function App() {
         />
       )}
 
-      {route === "colleges" && profileComplete && (
+      {route === "colleges" && (
         <CollegeBrowser
           records={filteredRecords}
           student={student}
